@@ -22,13 +22,15 @@ on:
         required: true
 
 jobs:
-  build:
+  create-diff:
+    env:
+      NODE_VERSION: 14
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js 14
+    - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v2
       with:
-        node-version: 14
+        node-version: ${{ env.NODE_VERSION }}
     - run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm diff-version-1
     
     
