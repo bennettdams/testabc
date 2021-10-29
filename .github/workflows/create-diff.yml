@@ -34,7 +34,7 @@ jobs:
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
         echo "Folder for release does not exist."
-        echo ::set-output name=is-release-already-created::"false"
+        echo ::set-output name=is-release-already-created::false
 
     - name: Release folder exists
       if: steps.evaluate-lines.outputs.lines == 1
@@ -43,7 +43,7 @@ jobs:
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
         echo "Folder for release exists."
-        echo ::set-output name=is-release-already-created::"true"
+        echo ::set-output name=is-release-already-created::true
 
   create-diff:
     needs: check-release
