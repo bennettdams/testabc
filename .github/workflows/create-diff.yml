@@ -32,7 +32,7 @@ jobs:
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: |
         echo lines:
-        echo $steps.evaluate-lines.outputs.lines
+        echo ${{ steps.evaluate-lines.outputs.lines }}
         if ${lines} == "0"; then
           echo ::set-output name=folder-for-release-exists::"false"
         else
