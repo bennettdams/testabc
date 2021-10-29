@@ -1,0 +1,94 @@
+name: Create diff
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Realese version to create diff for'
+        default: 'v12.0.0'
+        # Input has to be provided for the workflow to run
+        required: true
+
+jobs:
+  check-folder:
+    outputs:
+      folder-for-release-exists: ${{ steps.check-folder-for-release.folder-for-release-exists }}  
+    env:
+      DIFF_RESULTS_FOLDER: ./diff-results
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      # echo ::set-output name=folder-for-release-exists::$(ll | grep ${{ github.event.inputs.release-version }} | wc -l)
+    - name: Check if folder for version exists
+      id: check-folder-for-release
+      run: |
+        git fetch
+        echo ::set-output name=folder-for-release-exists::$(if [ ll | grep ${{ github.event.inputs.release-version }} | wc -l == "0" ]; then echo "false"; else echo "true"; fi)
+
+    - name: Announce that folder exists
+      if:  steps.check-folder-for-release.outputs.folder-for-release-exists == 'true'
+      run: |
+        echo "Already have a folder for release ${{ github.event.inputs.release-version }}, abort."
+
+  create-diff:
+    needs: check-folder
+    if: needs.check-folder.outputs.folder-for-release-exists == 'false'
+    env:
+      NODE_VERSION: 14
+      DIFF_RESULTS_FOLDER: ./diff-results
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      
+    - name: Check if folder for version exists
+      id: check-folder-for-release
+      run: |
+        git fetch
+        echo ::set-output name=folder-for-release-exists::$(ll | grep ${{ github.event.inputs.release-version }} | wc -l)
+
+    - name: Announce that folder exists
+      if:  steps.check-folder-for-release.outputs.folder-for-release-exists != '0'
+      run: |
+        echo "Already have that release, abort"
+
+    - name: Echo output
+      run: |
+        echo ${{ steps.check-folder-for-release.outputs.folder-for-release-exists }}
+
+    - name: Create diff compare version 1
+      if:  steps.check-folder-for-release.outputs.folder-for-release-exists == '0'
+      run: npx create-next-app@${{ github.event.inputs.release-version }} --ts --use-npm ${{ github.event.inputs.release-version }}
+      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+
+    - name: Push new create-next-app to repo
+      if:  steps.check-folder-for-release.outputs.folder-for-release-exists == '0'
+      run:  |
+        git config --global user.name 'Bennett Dams' 
+        git config --global user.email 'bennettdams@users.noreply.github.com'
+        git checkout -b ${{ github.event.inputs.release-version }}
+        git add -A
+        git commit -m '[automated commit] Test'
+        git push --set-upstream origin ${{ github.event.inputs.release-version }}
+
+    - name: Check folders for existence
+      run: ls -l
+      
+    - name: See diff results folder
+      run: ls -l ${{ env.DIFF_RESULTS_FOLDER }}
+    
+    
+    
+    
+    
+    
+    
+    
+    
