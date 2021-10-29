@@ -31,7 +31,7 @@ jobs:
     - name: testt
       id: check123
       run: |
-        if [[ "${{ steps.evaluate-lines.outputs.lines }}" == "0" ]];
+        if [[ ${{ steps.evaluate-lines.outputs.lines }} == 0 ]];
         then
           echo "::set-output name=folder-does-not-exist::true"
         else
@@ -39,11 +39,11 @@ jobs:
         fi
         
     - name: Creation for release is needed
-      if: ${{ steps.check123.outputs.folder-does-not-exist == true }}
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == true
       run: echo Creation for release is needed
 
     - name: Creation for release is NOT needed
-      if: ${{ steps.check123.outputs.folder-does-not-exist == false }}
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == false
       run: echo Creation for release is NOT needed
 
   create-app:
