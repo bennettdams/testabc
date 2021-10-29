@@ -13,7 +13,8 @@ on:
 jobs:
   check-release:
     outputs:
-      is-creating-for-release-needed: ${{ steps.release-folder-does-not-exist.outputs.folder-for-release-does-not-exist }}
+      # is-creating-for-release-needed: ${{ steps.release-folder-does-not-exist.outputs.folder-for-release-does-not-exist }}
+      is-creating-for-release-needed: ${{ steps.check123.outputs.folder-does-not-exist }}
     env:
       DIFF_RESULTS_FOLDER: ./diff-results
     runs-on: ubuntu-latest
@@ -27,15 +28,17 @@ jobs:
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: echo ::set-output name=lines::$(ls -l | grep ${{ github.event.inputs.release-version }} | wc -l)
 
-    - name: Release folder does not exist
-      id: release-folder-does-not-exist
-      if: steps.evaluate-lines.outputs.lines == 0
-      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+
+        
+    - name: testt
+      id: check123
       run: |
-        echo lines:
-        echo ${{ steps.evaluate-lines.outputs.lines }}
-        echo "Folder for release does not exist."
-        echo ::set-output name=folder-for-release-does-not-exist::false
+        if [[ "${{ steps.evaluate-lines.outputs.lines }}" == "0" ]]; then
+          echo "::set-output name=folder-does-not-exist::true"
+        fi
+        if [[ "${{ github.event.inputs.device }}" == "2" ]]; then
+          echo "::set-output name=folder-does-not-exist::false"
+        fi
 
   create-app:
     needs: check-release
