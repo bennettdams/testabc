@@ -40,17 +40,12 @@ jobs:
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
 
-    - name: Create branch
-      uses: peterjgrainger/action-create-branch@v2.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        branch: ${{ github.event.inputs.compareVersion1 }}
+    - name: Create branch, commit & push
+      run: |
+        git checkout -b ${{ github.event.inputs.compareVersion1 }}
+        git add .
+        git commit -m "Executed create-next-app for version ${{ github.event.inputs.compareVersion1 }}"
 
-    - name: Create diff compare version 2
-      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm ${{ github.event.inputs.compareVersion2 }}
-      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
-      
     - name: Check folders for existence
       run: ls -l
     - name: Check folders 2 for existence
