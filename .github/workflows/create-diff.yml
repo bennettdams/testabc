@@ -33,7 +33,7 @@ jobs:
       run: |
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
-        if ${{ steps.evaluate-lines.outputs.lines }} == "0"; then
+        if ${{ steps.evaluate-lines.outputs.lines }} == 0; then
           echo "Folder for release does not exist."
           echo ::set-output name=folder-for-release-exists::"false"
         else
