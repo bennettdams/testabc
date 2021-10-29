@@ -44,8 +44,12 @@ jobs:
       run: echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
 
     - name: Check branch check
-      run: echo "No branch found, creating one"
       if:  steps.check-branch-version-1.outputs.branch-version-1-exists == '0'
+      run: |
+        echo "No branch found, creating one"
+        git config --global user.name 'Bennett Dams' 
+        git config --global user.email 'bennettdams@users.noreply.github.com'
+        git checkout -b ${{ github.event.inputs.compareVersion1 }}   
 
     - name: Create diff compare version 1
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
