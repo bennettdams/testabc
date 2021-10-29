@@ -10,12 +10,13 @@ on:
         # Input has to be provided for the workflow to run
         required: true
 
-jobs:
+env:
+  DIFF_RESULTS_FOLDER: ./diff-results
+  
+jobs:  
   check-release:
     outputs:
       is-creating-for-release-needed: ${{ steps.check123.outputs.folder-does-not-exist }}
-    env:
-      DIFF_RESULTS_FOLDER: ./diff-results
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
@@ -30,10 +31,10 @@ jobs:
     - name: testt
       id: check123
       run: |
-        if [[ "${{ steps.evaluate-lines.outputs.lines }}" == "0" ]]; then
+        if [[ "${{ steps.evaluate-lines.outputs.lines }}" == "0" ]];
+        then
           echo "::set-output name=folder-does-not-exist::true"
-        fi
-        if [[ "${{ github.event.inputs.device }}" == "2" ]]; then
+        else
           echo "::set-output name=folder-does-not-exist::false"
         fi
 
@@ -42,7 +43,6 @@ jobs:
     if: ${{ needs.check-release.outputs.is-creating-for-release-needed }} == true
     env:
       NODE_VERSION: 14
-      DIFF_RESULTS_FOLDER: ./diff-results
     runs-on: ubuntu-latest
     steps:
     - name: Setup Node.js ${{ env.NODE_VERSION }}
