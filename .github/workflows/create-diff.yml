@@ -43,10 +43,6 @@ jobs:
     - name: Log folder does not exist
       run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
-    - name: Check 1
-      if: steps.check123.outputs.folder-does-not-exist == abc123
-      run: echo "1"
-
     - name: Check 3
       if: steps.check123.outputs.folder-does-not-exist == 'abc123'
       run: echo "3"
