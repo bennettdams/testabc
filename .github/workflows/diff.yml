@@ -23,6 +23,8 @@ on:
 
 jobs:
   create-diff:
+    outputs:
+      branch-version-1-exists: ${{ steps.check-branch-version-1.outputs.branch-exists }}      
     env:
       NODE_VERSION: 14
       DIFF_RESULTS_FOLDER: ./diff-results
@@ -35,6 +37,15 @@ jobs:
         
     - name: Checkout repo
       uses: actions/checkout@v2
+      
+    - name: Check if branch for version exists
+      id: check-branch-version-1
+      # run: git branch -r | grep ${{ github.event.inputs.compareVersion1 }}
+      run: echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
+
+    - name: Check branch check
+    - run: echo "No branch found, creating one"
+      if:  steps.check-branch-version-1.outputs.branch-version-1-exists == '0'
 
     - name: Create diff compare version 1
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
