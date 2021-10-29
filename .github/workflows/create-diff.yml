@@ -21,13 +21,18 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
       # echo ::set-output name=folder-for-release-exists::$(ll | grep ${{ github.event.inputs.release-version }} | wc -l)
+
+    - name: Evaluate lines
+      id: evaluate-lines
+      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+      run: echo ::set-output name=lines::$(ll | grep test | wc -l)
+
     - name: Check if folder for version exists
       id: check-folder-for-release
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: |
-        lines=$(ll | grep test | wc -l)
         echo lines:
-        echo $lines
+        echo $steps.evaluate-lines.outputs.lines
         if ${lines} == "0"; then
           echo ::set-output name=folder-for-release-exists::"false"
         else
