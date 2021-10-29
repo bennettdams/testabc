@@ -25,7 +25,10 @@ jobs:
       id: check-folder-for-release
       run: |
         git fetch origin main
-        echo ::set-output name=folder-for-release-exists::$(lines='ll | grep ${{ github.event.inputs.release-version }} | wc -l'; if [ $lines == "0" ]; then echo "false"; else echo "true"; fi)
+        lines=$(ll | grep ${{ github.event.inputs.release-version }} | wc -l)
+        echo lies
+        echo $lines
+        echo ::set-output name=folder-for-release-exists::$(if [ $lines == "0" ]; then echo "false"; else echo "true"; fi)
 
     - name: Announce that folder exists
       if:  steps.check-folder-for-release.outputs.folder-for-release-exists == 'true'
