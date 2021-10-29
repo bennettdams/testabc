@@ -61,7 +61,7 @@ jobs:
         git checkout -b ${{ github.event.inputs.compareVersion1 }}
         git add -A
         git commit -m '[automated commit] Test'
-        git push
+        git push --set-upstream origin ${{ github.event.inputs.compareVersion1 }}
 
     - name: Check folders for existence
       run: ls -l
