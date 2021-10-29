@@ -37,6 +37,9 @@ jobs:
         else
           echo "::set-output name=folder-does-not-exist::false"
         fi
+    
+    - name: Log folder does not exist
+      run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
     - name: Creation for release is needed
       if: ${{ steps.check123.outputs.folder-does-not-exist }} == true
