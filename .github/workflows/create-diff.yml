@@ -33,8 +33,10 @@ jobs:
       run: |
         if [[ ${{ steps.evaluate-lines.outputs.lines }} == 0 ]];
         then
+          echo Folder does not exist.
           echo "::set-output name=folder-does-not-exist::true"
         else
+          echo Folder exists.
           echo "::set-output name=folder-does-not-exist::false"
         fi
     
