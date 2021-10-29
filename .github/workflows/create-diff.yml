@@ -25,7 +25,7 @@ jobs:
       id: check-folder-for-release
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       env:
-        LINES: $(ll | grep test | wc -l)
+        LINES: ${{ ll | grep test | wc -l }}
       run: |
         echo lines
         echo $LINES
