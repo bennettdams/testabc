@@ -27,9 +27,7 @@ jobs:
       id: evaluate-lines
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: echo ::set-output name=lines::$(ls -l | grep ${{ github.event.inputs.release-version }} | wc -l)
-
-
-        
+  
     - name: testt
       id: check123
       run: |
@@ -39,6 +37,15 @@ jobs:
         if [[ "${{ github.event.inputs.device }}" == "2" ]]; then
           echo "::set-output name=folder-does-not-exist::false"
         fi
+
+  test:
+    needs: check-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: A
+        run: |
+          echo needed:
+          echo ${{ needs.check-release.outputs.is-creating-for-release-needed }}
 
   create-app:
     needs: check-release
