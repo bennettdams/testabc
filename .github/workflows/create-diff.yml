@@ -13,7 +13,7 @@ on:
 jobs:
   check-release:
     outputs:
-      is-release-already-created: 'true'
+      is-creating-for-release-needed: ${{ steps.release-folder-does-not-exist.outputs.folder-for-release-does-not-exist }}
     env:
       DIFF_RESULTS_FOLDER: ./diff-results
     runs-on: ubuntu-latest
@@ -28,26 +28,18 @@ jobs:
       run: echo ::set-output name=lines::$(ls -l | grep ${{ github.event.inputs.release-version }} | wc -l)
 
     - name: Release folder does not exist
+      id: release-folder-does-not-exist
       if: steps.evaluate-lines.outputs.lines == 0
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: |
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
         echo "Folder for release does not exist."
-        echo ::set-output name=is-release-already-created::false
+        echo ::set-output name=folder-for-release-does-not-exist::false
 
-    - name: Release folder exists
-      if: steps.evaluate-lines.outputs.lines == 1
-      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
-      run: |
-        echo lines:
-        echo ${{ steps.evaluate-lines.outputs.lines }}
-        echo "Folder for release exists."
-        echo ::set-output name=is-release-already-created::true
-
-  create-diff:
+  create-app:
     needs: check-release
-    if: needs.check-release.outputs.is-release-already-created == false
+    if: needs.check-release.outputs.is-creating-for-release-needed == true
     env:
       NODE_VERSION: 14
       DIFF_RESULTS_FOLDER: ./diff-results
