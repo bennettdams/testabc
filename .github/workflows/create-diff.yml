@@ -71,10 +71,6 @@ jobs:
       if: ${{ steps.check123.outputs.folder-does-not-exist == false }}
       run: echo "7"
 
-    - name: Check 8
-      if: ${{ steps.check123.outputs.folder-does-not-exist == "false" }}
-      run: echo "8"
-
     - name: Check 9
       if: ${{ steps.check123.outputs.folder-does-not-exist == 'false' }}
       run: echo "9"
