@@ -25,14 +25,19 @@ jobs:
   create-diff:
     env:
       NODE_VERSION: 14
+      WORKING_DIR: ./diff-folder
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js ${{ env.NODE_VERSION }}
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ env.NODE_VERSION }}
-    - run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm diff-version-1
-    
+    - name: Create diff compare version 1
+      run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm {{ github.event.inputs.compareVersion1 }}
+      working-directory: ${{ env.WORKING_DIR }}
+    - name: Create diff compare version 2
+      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm {{ github.event.inputs.compareVersion1 }}
+      working-directory: ${{ env.WORKING_DIR }}
     
     
     
