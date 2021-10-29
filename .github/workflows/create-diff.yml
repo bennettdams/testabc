@@ -13,7 +13,6 @@ on:
 jobs:
   check-release:
     outputs:
-      # is-creating-for-release-needed: ${{ steps.release-folder-does-not-exist.outputs.folder-for-release-does-not-exist }}
       is-creating-for-release-needed: ${{ steps.check123.outputs.folder-does-not-exist }}
     env:
       DIFF_RESULTS_FOLDER: ./diff-results
@@ -37,15 +36,6 @@ jobs:
         if [[ "${{ github.event.inputs.device }}" == "2" ]]; then
           echo "::set-output name=folder-does-not-exist::false"
         fi
-
-  test:
-    needs: check-release
-    runs-on: ubuntu-latest
-    steps:
-      - name: A
-        run: |
-          echo needed:
-          echo ${{ needs.check-release.outputs.is-creating-for-release-needed }}
 
   create-app:
     needs: check-release
