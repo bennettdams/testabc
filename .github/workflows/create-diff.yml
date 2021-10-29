@@ -37,38 +37,38 @@ jobs:
           echo "::set-output name=folder-does-not-exist::true"
         else
           echo Folder exists.
-          echo "::set-output name=folder-does-not-exist::false"
+          echo "::set-output name=folder-does-not-exist::abc123"
         fi
 
     - name: Log folder does not exist
       run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
     - name: Check 1
-      if: steps.check123.outputs.folder-does-not-exist == false
+      if: steps.check123.outputs.folder-does-not-exist == abc123
       run: echo "1"
 
     - name: Check 3
-      if: steps.check123.outputs.folder-does-not-exist == 'false'
+      if: steps.check123.outputs.folder-does-not-exist == 'abc123'
       run: echo "3"
 
     - name: Check 4
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == false
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == abc123
       run: echo "4"
 
     - name: Check 5
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "false"
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "abc123"
       run: echo "5"
 
     - name: Check 6
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'false'
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'abc123'
       run: echo "6"
 
     - name: Check 7
-      if: ${{ steps.check123.outputs.folder-does-not-exist == false }}
+      if: ${{ steps.check123.outputs.folder-does-not-exist == abc123 }}
       run: echo "7"
 
     - name: Check 9
-      if: ${{ steps.check123.outputs.folder-does-not-exist == 'false' }}
+      if: ${{ steps.check123.outputs.folder-does-not-exist == 'abc123' }}
       run: echo "9"
 
   create-app:
