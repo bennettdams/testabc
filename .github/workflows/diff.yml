@@ -25,7 +25,6 @@ jobs:
   create-diff:
     env:
       NODE_VERSION: 14
-      WORKING_DIR: ./diff-folder
     runs-on: ubuntu-latest
     steps:
     - name: Setup Node.js ${{ env.NODE_VERSION }}
@@ -34,10 +33,10 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
     - name: Create diff compare version 1
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm {{ github.event.inputs.compareVersion1 }}
-      working-directory: ${{ env.WORKING_DIR }}
     - name: Create diff compare version 2
-      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm {{ github.event.inputs.compareVersion1 }}
-      working-directory: ${{ env.WORKING_DIR }}
+      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm {{ github.event.inputs.compareVersion2 }}
+    - name: Check folders for existence
+      run: ls -l
     
     
     
