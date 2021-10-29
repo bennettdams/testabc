@@ -5,7 +5,7 @@ on:
     inputs:
       release-version:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Realese version to create diff for'
+        description: 'Release version to create diff for'
         default: 'v12.0.0'
         # Input has to be provided for the workflow to run
         required: true
@@ -47,7 +47,7 @@ jobs:
 
   create-diff:
     needs: check-release
-    if: needs.check-release.outputs.is-release-already-created == 'false'
+    if: needs.check-release.outputs.is-release-already-created == false
     env:
       NODE_VERSION: 14
       DIFF_RESULTS_FOLDER: ./diff-results
