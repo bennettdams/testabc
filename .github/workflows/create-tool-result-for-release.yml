@@ -1,23 +1,22 @@
-name: Create diff
+name: Create tool result for release
 
 on:
   workflow_dispatch:
     inputs:
       release-version:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Release version to create diff for'
+        description: 'Release version to create tool result for'
         default: 'v12.0.0'
-        # Input has to be provided for the workflow to run
         required: true
 
 env:
-  DIFF_RESULTS_FOLDER: ./diff-results
+  # folder where the tool result is saved
+  TOOL_RESULTS_FOLDER: ./tool-results
   RELEASE_VERSION: ${{ github.event.inputs.release-version }}
   
 jobs:  
   check-release:
     outputs:
-      is-creating-for-release-needed: ${{ steps.check123.outputs.folder-does-not-exist }}
+      is-creating-for-release-needed: ${{ steps.evaluate-folder.outputs.folder-does-not-exist }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
@@ -25,11 +24,11 @@ jobs:
 
     - name: Evaluate lines
       id: evaluate-lines
-      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+      working-directory: ${{ env.TOOL_RESULTS_FOLDER }}
       run: echo ::set-output name=lines::$(ls -l | grep ${{ env.RELEASE_VERSION }} | wc -l)
   
-    - name: testt
-      id: check123
+    - name: Evaluate if folder for version already exists
+      id: evaluate-folder
       run: |
         if [[ ${{ steps.evaluate-lines.outputs.lines }} == 0 ]];
         then
@@ -39,29 +38,6 @@ jobs:
           echo Folder exists.
           echo "::set-output name=folder-does-not-exist::no"
         fi
-
-    - name: Log folder does not exist
-      run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
-        
-    - name: Check 3
-      if: steps.check123.outputs.folder-does-not-exist == 'no'
-      run: echo "3"
-
-    - name: Check 4
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == no
-      run: echo "4"
-
-    - name: Check 5
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "no"
-      run: echo "5"
-
-    - name: Check 6
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'no'
-      run: echo "6"
-
-    - name: Check 9
-      if: ${{ steps.check123.outputs.folder-does-not-exist == 'no' }}
-      run: echo "9"
 
   create-app:
     needs: check-release
@@ -80,7 +56,7 @@ jobs:
 
     - name: Create app for release
       run: npx create-next-app@${{ env.RELEASE_VERSION }} --ts --use-npm ${{ env.RELEASE_VERSION }}
-      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+      working-directory: ${{ env.TOOL_RESULTS_FOLDER }}
 
     - name: Push new create-next-app to repo
       run:  |
@@ -94,7 +70,7 @@ jobs:
       run: ls -l
       
     - name: See diff results folder
-      run: ls -l ${{ env.DIFF_RESULTS_FOLDER }}
+      run: ls -l ${{ env.TOOL_RESULTS_FOLDER }}
     
     
     
