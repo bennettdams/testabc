@@ -48,6 +48,10 @@ jobs:
       run: |
         echo "Already have that branch, abort"
 
+    - name: Echo output
+      run: |
+        echo ${{ steps.check-branch-version-1.outputs.branch-version-1-exists }}
+
     - name: Create diff compare version 1
       if:  steps.check-branch-version-1.outputs.branch-version-1-exists == '0'
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
