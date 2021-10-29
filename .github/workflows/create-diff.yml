@@ -47,10 +47,6 @@ jobs:
       if: steps.check123.outputs.folder-does-not-exist == false
       run: echo "1"
 
-    - name: Check 2
-      if: steps.check123.outputs.folder-does-not-exist == "false"
-      run: echo "2"
-
     - name: Check 3
       if: steps.check123.outputs.folder-does-not-exist == 'false'
       run: echo "3"
