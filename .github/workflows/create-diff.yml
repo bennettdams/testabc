@@ -24,12 +24,16 @@ jobs:
     - name: Check if folder for version exists
       id: check-folder-for-release
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
+      env:
+        LINES: $(ll | grep test | wc -l)
       run: |
-        git fetch origin main
-        lines="$(ll | grep test | wc -l)"
         echo lines
-        echo $lines
-        echo ::set-output name=folder-for-release-exists::$(if [ $lines == "0" ]; then echo "false"; else echo "true"; fi)
+        echo $LINES
+        if ${LINES} == "0"; then
+          echo ::set-output name=folder-for-release-exists::"false"
+        else
+          echo ::set-output name=folder-for-release-exists::"true"
+        fi
 
     - name: Announce that folder exists
       if:  steps.check-folder-for-release.outputs.folder-for-release-exists == 'true'
