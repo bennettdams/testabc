@@ -11,9 +11,9 @@ on:
         required: true
 
 jobs:
-  check-folder:
+  check-release:
     outputs:
-      folder-for-release-exists: ${{ steps.check-folder-for-release.folder-for-release-exists }}  
+      is-release-already-created: 'true'
     env:
       DIFF_RESULTS_FOLDER: ./diff-results
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
         echo "Folder for release does not exist."
-        echo ::set-output name=folder-for-release-exists::"false"
+        echo ::set-output name=is-release-already-created::"false"
 
     - name: Release folder exists
       if: steps.evaluate-lines.outputs.lines == 1
@@ -43,11 +43,11 @@ jobs:
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
         echo "Folder for release exists."
-        echo ::set-output name=folder-for-release-exists::"true"
+        echo ::set-output name=is-release-already-created::"true"
 
   create-diff:
-    needs: check-folder
-    if: check-folder.outputs.folder-for-release-exists == 'false'
+    needs: check-release
+    if: needs.check-release.outputs.is-release-already-created == 'false'
     env:
       NODE_VERSION: 14
       DIFF_RESULTS_FOLDER: ./diff-results
