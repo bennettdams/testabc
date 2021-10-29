@@ -43,7 +43,7 @@ jobs:
       # run: git branch -r | grep ${{ github.event.inputs.compareVersion1 }}
       run: echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
 
-    - name: Check branch check (yes branch)
+    - name: Echo if version branch already exists
       if:  steps.check-branch-version-1.outputs.branch-version-1-exists != '0'
       run: |
         echo "Already have that branch, abort"
