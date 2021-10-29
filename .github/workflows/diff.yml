@@ -43,11 +43,11 @@ jobs:
       # run: git branch -r | grep ${{ github.event.inputs.compareVersion1 }}
       run: |
         echo branches
-        echo $(git ls-remote --heads git@github.com:bennettdams/testabc.git ${{ github.event.inputs.compareVersion1 }})
+        echo $(git ls-remote --heads git@github.com:bennettdams/testabc.git)
         echo grep
-        echo $((git ls-remote --heads git@github.com:bennettdams/testabc.git ${{ github.event.inputs.compareVersion1 }} | grep ${{ github.event.inputs.compareVersion1 }})
+        echo $((git ls-remote --heads git@github.com:bennettdams/testabc.git | grep ${{ github.event.inputs.compareVersion1 }})
         echo wc
-        echo $((git ls-remote --heads git@github.com:bennettdams/testabc.git ${{ github.event.inputs.compareVersion1 }} | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
+        echo $((git ls-remote --heads git@github.com:bennettdams/testabc.git | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
         echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
 
     - name: Echo if version branch already exists
