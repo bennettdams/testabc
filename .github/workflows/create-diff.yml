@@ -25,7 +25,7 @@ jobs:
     - name: Evaluate lines
       id: evaluate-lines
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
-      run: echo ::set-output name=lines::$(ls -l | grep test | wc -l)
+      run: echo ::set-output name=lines::$(ls -l | grep ${{ github.event.inputs.release-version }} | wc -l)
 
     - name: Check if folder for version exists
       id: check-folder-for-release
@@ -33,9 +33,11 @@ jobs:
       run: |
         echo lines:
         echo ${{ steps.evaluate-lines.outputs.lines }}
-        if ${lines} == "0"; then
+        if ${{ steps.evaluate-lines.outputs.lines }} == "0"; then
+          echo "Folder for release does not exist."
           echo ::set-output name=folder-for-release-exists::"false"
         else
+          echo "Folder for release exists."
           echo ::set-output name=folder-for-release-exists::"true"
         fi
 
