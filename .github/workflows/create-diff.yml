@@ -34,38 +34,38 @@ jobs:
         if [[ ${{ steps.evaluate-lines.outputs.lines }} == 0 ]];
         then
           echo Folder does not exist.
-          echo "::set-output name=folder-does-not-exist::true"
+          echo "::set-output name=folder-does-not-exist::yes"
         else
           echo Folder exists.
-          echo "::set-output name=folder-does-not-exist::abc123"
+          echo "::set-output name=folder-does-not-exist::no"
         fi
 
     - name: Log folder does not exist
       run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
     - name: Check 3
-      if: steps.check123.outputs.folder-does-not-exist == 'abc123'
+      if: steps.check123.outputs.folder-does-not-exist == 'no'
       run: echo "3"
 
     - name: Check 4
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == abc123
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == no
       run: echo "4"
 
     - name: Check 5
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "abc123"
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "no"
       run: echo "5"
 
     - name: Check 6
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'abc123'
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'no'
       run: echo "6"
 
     - name: Check 9
-      if: ${{ steps.check123.outputs.folder-does-not-exist == 'abc123' }}
+      if: ${{ steps.check123.outputs.folder-does-not-exist == 'no' }}
       run: echo "9"
 
   create-app:
     needs: check-release
-    if: needs.check-release.outputs.is-creating-for-release-needed == true
+    if: needs.check-release.outputs.is-creating-for-release-needed == 'yes'
     env:
       NODE_VERSION: 14
     runs-on: ubuntu-latest
