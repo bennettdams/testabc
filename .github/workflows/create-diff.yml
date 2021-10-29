@@ -26,7 +26,7 @@ jobs:
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: |
         git fetch origin main
-        lines="$(ll | grep '-resul' | wc -l)"
+        lines="$(ll | grep test | wc -l)"
         echo lines
         echo $lines
         echo ::set-output name=folder-for-release-exists::$(if [ $lines == "0" ]; then echo "false"; else echo "true"; fi)
