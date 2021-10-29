@@ -25,7 +25,7 @@ jobs:
     - name: Evaluate lines
       id: evaluate-lines
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
-      run: echo ::set-output name=lines::$(ll | grep test | wc -l)
+      run: echo ::set-output name=lines::$(ls -l | grep test | wc -l)
 
     - name: Check if folder for version exists
       id: check-folder-for-release
