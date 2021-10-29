@@ -65,7 +65,8 @@ jobs:
 
     - name: Check folders for existence
       run: ls -l
-    - name: Check folders 2 for existence
+      
+    - name: See diff results folder
       run: ls -l ${{ env.DIFF_RESULTS_FOLDER }}
     
     
