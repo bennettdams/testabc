@@ -49,7 +49,7 @@ jobs:
 
   create-app:
     needs: check-release
-    if: ${{ needs.check-release.outputs.is-creating-for-release-needed == true }}
+    if: ${{ needs.check-release.outputs.is-creating-for-release-needed }} == true
     env:
       NODE_VERSION: 14
       DIFF_RESULTS_FOLDER: ./diff-results
