@@ -41,7 +41,14 @@ jobs:
     - name: Check if branch for version exists
       id: check-branch-version-1
       # run: git branch -r | grep ${{ github.event.inputs.compareVersion1 }}
-      run: echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
+      run: |
+        echo branches
+        echo $(git branch -r)
+        echo grep
+        echo $(git branch -r | grep ${{ github.event.inputs.compareVersion1 }})
+        echo wc
+        echo $(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
+        echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
 
     - name: Echo if version branch already exists
       if:  steps.check-branch-version-1.outputs.branch-version-1-exists != '0'
