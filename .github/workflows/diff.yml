@@ -43,13 +43,19 @@ jobs:
       # run: git branch -r | grep ${{ github.event.inputs.compareVersion1 }}
       run: echo ::set-output name=branch-version-1-exists::$(git branch -r | grep ${{ github.event.inputs.compareVersion1 }} | wc -l)
 
-    - name: Check branch check
+    - name: Check branch check (no branch)
       if:  steps.check-branch-version-1.outputs.branch-version-1-exists == '0'
       run: |
         echo "No branch found, creating one"
         git config --global user.name 'Bennett Dams' 
         git config --global user.email 'bennettdams@users.noreply.github.com'
-        git checkout -b ${{ github.event.inputs.compareVersion1 }}   
+        git checkout -b ${{ github.event.inputs.compareVersion1 }}
+        git push
+
+    - name: Check branch check (yes branch)
+      if:  steps.check-branch-version-1.outputs.branch-version-1-exists != '0'
+      run: |
+        echo "Already have that branch, abort"
 
     - name: Create diff compare version 1
       run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
