@@ -39,17 +39,45 @@ jobs:
           echo Folder exists.
           echo "::set-output name=folder-does-not-exist::false"
         fi
-    
+
     - name: Log folder does not exist
       run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
-    - name: Creation for release is needed
-      if: steps.check123.outputs.folder-does-not-exist == true
-      run: echo Creation for release is needed
-
-    - name: Creation for release is NOT needed
+    - name: Check 1
       if: steps.check123.outputs.folder-does-not-exist == false
-      run: echo Creation for release is NOT needed
+      run: echo "1"
+
+    - name: Check 2
+      if: steps.check123.outputs.folder-does-not-exist == "false"
+      run: echo "2"
+
+    - name: Check 3
+      if: steps.check123.outputs.folder-does-not-exist == 'false'
+      run: echo "3"
+
+    - name: Check 4
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == false
+      run: echo "4"
+
+    - name: Check 5
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == "false"
+      run: echo "5"
+
+    - name: Check 6
+      if: ${{ steps.check123.outputs.folder-does-not-exist }} == 'false'
+      run: echo "6"
+
+    - name: Check 7
+      if: ${{ steps.check123.outputs.folder-does-not-exist == false }}
+      run: echo "7"
+
+    - name: Check 8
+      if: ${{ steps.check123.outputs.folder-does-not-exist == "false" }}
+      run: echo "8"
+
+    - name: Check 9
+      if: ${{ steps.check123.outputs.folder-does-not-exist == 'false' }}
+      run: echo "9"
 
   create-app:
     needs: check-release
