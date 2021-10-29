@@ -32,9 +32,9 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
     - name: Create diff compare version 1
-      run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm {{ github.event.inputs.compareVersion1 }}
+      run: npx create-next-app@${{ github.event.inputs.compareVersion1 }} --ts --use-npm ${{ github.event.inputs.compareVersion1 }}
     - name: Create diff compare version 2
-      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm {{ github.event.inputs.compareVersion2 }}
+      run: npx create-next-app@${{ github.event.inputs.compareVersion2 }} --ts --use-npm ${{ github.event.inputs.compareVersion2 }}
     - name: Check folders for existence
       run: ls -l
     
