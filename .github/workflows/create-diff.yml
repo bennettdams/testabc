@@ -23,6 +23,7 @@ jobs:
       # echo ::set-output name=folder-for-release-exists::$(ll | grep ${{ github.event.inputs.release-version }} | wc -l)
     - name: Check if folder for version exists
       id: check-folder-for-release
+      working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
       run: |
         git fetch origin main
         lines="$(ll | grep '-resul' | wc -l)"
