@@ -71,7 +71,6 @@ jobs:
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
 
     - name: Push new create-next-app to repo
-      if:  steps.check-folder-for-release.outputs.folder-for-release-exists == '0'
       run:  |
         git config --global user.name 'Bennett Dams' 
         git config --global user.email 'bennettdams@users.noreply.github.com'
