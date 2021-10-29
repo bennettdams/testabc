@@ -24,12 +24,11 @@ jobs:
     - name: Check if folder for version exists
       id: check-folder-for-release
       working-directory: ${{ env.DIFF_RESULTS_FOLDER }}
-      env:
-        LINES: ${{ $(ll | grep test | wc -l) }}
       run: |
-        echo lines
-        echo $LINES
-        if ${LINES} == "0"; then
+        lines=$(ll | grep test | wc -l)
+        echo lines:
+        echo $lines
+        if ${lines} == "0"; then
           echo ::set-output name=folder-for-release-exists::"false"
         else
           echo ::set-output name=folder-for-release-exists::"true"
