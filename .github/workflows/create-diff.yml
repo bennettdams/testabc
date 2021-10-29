@@ -44,16 +44,16 @@ jobs:
       run: echo ${{ steps.check123.outputs.folder-does-not-exist }}
         
     - name: Creation for release is needed
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == true
+      if: steps.check123.outputs.folder-does-not-exist == true
       run: echo Creation for release is needed
 
     - name: Creation for release is NOT needed
-      if: ${{ steps.check123.outputs.folder-does-not-exist }} == false
+      if: steps.check123.outputs.folder-does-not-exist == false
       run: echo Creation for release is NOT needed
 
   create-app:
     needs: check-release
-    if: ${{ needs.check-release.outputs.is-creating-for-release-needed }} == true
+    if: needs.check-release.outputs.is-creating-for-release-needed == true
     env:
       NODE_VERSION: 14
     runs-on: ubuntu-latest
