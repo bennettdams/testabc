@@ -10,8 +10,7 @@ on:
 
 env:
   # folder where the tool result is saved
-  TOOL_NAME: nextjs
-  TOOL_RESULTS_FOLDER: ./tool-results/${{ env.TOOL_NAME }}
+  TOOL_RESULTS_FOLDER: ./tool-results/nextjs
   RELEASE_VERSION: ${{ github.event.inputs.release-version }}
   
 jobs:  
